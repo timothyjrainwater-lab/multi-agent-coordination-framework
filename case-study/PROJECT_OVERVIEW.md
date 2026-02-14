@@ -1,5 +1,7 @@
 # Project Overview
 
+**Last Updated:** 2026-02-14
+
 ## What Was Built
 
 A deterministic D&D 3.5e referee engine — a software system that adjudicates tabletop RPG combat with mechanical fidelity to the System Reference Document (SRD). The system resolves attacks, damage, conditions, spells, combat maneuvers, movement, terrain, and character progression using the exact formulas published in the Player's Handbook and Dungeon Master's Guide.
@@ -17,14 +19,17 @@ The operator wrote zero lines of code directly. All code was produced by AI agen
 
 | Metric | Value |
 |--------|-------|
-| Automated tests | 5,500+ |
+| Automated tests | 5,774+ (15 pre-existing failures, 0 regressions) |
 | Verified formulas | 338 across 9 domains |
 | Source files | 15+ core resolvers |
-| Governance documents | 7+ (each born from a specific failure) |
+| Governance documents | 10+ (each born from a specific failure) |
 | Bugs found in verification | 30 (later reduced to ~22 after research cross-referencing) |
 | AMBIGUOUS verdicts requiring PM decision | 28 |
-| Fix work orders dispatched | 13 covering 30 bugs |
+| Total work orders dispatched | 33 (fix, feature, research, governance, audit) |
+| Builder debriefs archived | 12 |
+| Research documents produced | 19 |
 | Parallel agent groups (single session) | 7 simultaneous |
+| Total agent sessions | 40+ |
 
 ## Complexity
 
@@ -49,3 +54,14 @@ RNG streams are isolated (combat/initiative/policy/saves) to enable deterministi
 ## Timeline Context
 
 The framework was developed over approximately 2 weeks of intensive multi-agent coordination, with the operator working from behind the Great Firewall of China using VPN access to AI providers and GitHub. Network instability directly influenced the emphasis on artifact primacy (sessions can drop mid-conversation) and dispatch self-containment (you may not get a chance to clarify).
+
+## Network Environment
+
+This project was built behind the Great Firewall of China, accessing GitHub, AI APIs, and documentation through a VPN. If you're working in a similar restricted network environment:
+
+- **SSL certificate revocation checks may fail.** Git pushes can fail with `CRYPT_E_REVOCATION_OFFLINE`. Fix: `git config http.sslBackend openssl` in the affected repo.
+- **API latency is variable.** LLM agent sessions may time out or drop mid-conversation. This makes the handoff protocol and artifact primacy pattern even more critical — if your session drops unexpectedly, pinned artifacts are all that survives.
+- **Multiple AI providers may have different accessibility.** Some providers are reachable, others aren't, depending on your VPN routing. This affects which agents you can use in your fleet and is a real constraint on multi-provider coordination.
+- **Context window efficiency matters more.** Higher latency means longer round-trips. Wasting a context window on orientation (because the reading order was wrong) costs more wall-clock time when every API call takes longer.
+
+None of these issues are theoretical. They were encountered during the development of this framework and directly influenced the emphasis on artifact primacy (sessions can drop) and dispatch self-containment (you may not get a chance to clarify).

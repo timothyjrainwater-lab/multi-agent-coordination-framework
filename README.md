@@ -2,7 +2,7 @@
 
 **A practical methodology for coordinating multiple AI agents on complex software projects.**
 
-Built and proven on a 5,775+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
+Built and proven on a 5,774+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
 
 ---
 
@@ -25,10 +25,10 @@ These aren't theoretical problems. They're what happens on Day 3 of any serious 
 Most AI coordination guides tell you what to do. This one shows you what went wrong.
 
 **From the proving ground (D&D 3.5e combat engine):**
-- 5,775+ automated tests across 9 verification domains
+- 5,774+ automated tests across 9 verification domains
 - 338 formulas verified against source rules
-- 30 bugs found and categorized into 8 coordination error patterns
-- 7 WO batches (H0 fixes + H1 features) coordinated across parallel agent sessions
+- 30 bugs found and categorized into 10 coordination error patterns
+- 33 work orders dispatched across 40+ agent sessions
 - 3 of 7 parallel agents silently failed to commit in one dispatch — the fix became a governance pattern
 
 Every pattern in this framework exists because something specific broke. The [failure catalog](case-study/FAILURE_CATALOG.md) has the receipts.
@@ -93,6 +93,10 @@ Reusable solutions to specific coordination problems. Each pattern documents the
 | [Concurrent Session Protocol](patterns/CONCURRENT_SESSION_PROTOCOL.md) | Parallel sessions conflict on shared files | How to manage file ownership across sessions |
 | [PM Context Compression](patterns/PM_CONTEXT_COMPRESSION.md) | Human coordinator can't read everything | How to structure information flow to a bandwidth-limited human |
 | [Coordination Failure Taxonomy](patterns/COORDINATION_FAILURE_TAXONOMY.md) | Same mistakes repeat across projects | Categorized catalog of what goes wrong and why |
+| [Role Separation](patterns/ROLE_SEPARATION.md) | Agents assume they can do everything | Five-role model with explicit authorities and boundaries |
+| [Research-to-Build Pipeline](patterns/RESEARCH_TO_BUILD_PIPELINE.md) | Raw insights produce scope bleed when dispatched directly | Staged conversion: Burst → Research → Brick → Builder WO |
+| [Plain English Pass](patterns/PLAIN_ENGLISH_PASS.md) | Non-technical operators can't parse technical debriefs | 3-question translation layer before the technical dump |
+| [Debrief Integrity Boundary](patterns/DEBRIEF_INTEGRITY_BOUNDARY.md) | Agent self-reports are trusted without verification | Named trust boundary with mitigation options |
 | [Integration Canary](patterns/INTEGRATION_CANARY.md) | Unit tests pass but product doesn't work end-to-end | How to catch integration gaps before they compound |
 
 ### Templates
@@ -138,15 +142,15 @@ If you're starting a multi-agent project today:
 
 This framework wasn't designed top-down. It was discovered bottom-up by a non-technical operator coordinating multiple AI agents (Claude Opus, Claude Sonnet, GPT-4) to build a D&D 3.5e deterministic referee engine. Every pattern exists because something broke and the fix got codified into a protocol.
 
-**Project stats at time of extraction:**
-- 5,775+ automated tests
-- 338 formulas verified against source rules
-- 30 bugs found and categorized into 8 error patterns
-- 9 verification domains completed
-- 7+ governance documents, each born from a specific failure
-- 7 H1 feature WOs completed and integrated
-- Integration Canary pattern discovered and codified
-- Multiple concurrent agent sessions coordinated through file-based protocols
+**Project stats (updated 2026-02-14):**
+- 5,774+ automated tests (15 pre-existing failures, 0 regressions)
+- 338 formulas verified against source rules across 9 domains
+- 30 bugs found and categorized into 10 error patterns
+- 33 work orders dispatched (fix, feature, research, governance, audit)
+- 12 builder debriefs archived
+- 19 research documents produced
+- 40+ agent sessions coordinated through file-based protocols
+- 10+ governance documents, each born from a specific failure
 
 **The operator's background:** Former chef, current English educator, zero programming experience. The methodology emerged because protocols were the only tool available — and it turns out protocols are the right tool for coordinating agents that can't remember yesterday.
 
@@ -163,16 +167,9 @@ This is a living framework. If you're using these patterns on your own multi-age
 
 ## Operational Notes
 
-### VPN / Restricted Network Environments
+### Restricted Network Environments
 
-This framework was built behind the Great Firewall of China, accessing GitHub, AI APIs, and documentation through a VPN. If you're working in a similar environment:
-
-- **SSL certificate revocation checks may fail.** Git pushes can fail with `CRYPT_E_REVOCATION_OFFLINE`. Fix: `git config http.sslBackend openssl` in the affected repo.
-- **API latency is variable.** LLM agent sessions may time out or drop mid-conversation. This makes the handoff protocol and artifact primacy pattern even more critical — if your session drops unexpectedly, pinned artifacts are all that survives.
-- **Multiple AI providers may have different accessibility.** Some providers are reachable, others aren't, depending on your VPN routing. This affects which agents you can use in your fleet and is a real constraint on multi-provider coordination.
-- **Context window efficiency matters more.** Higher latency means longer round-trips. Wasting a context window on orientation (because the reading order was wrong) costs more wall-clock time when every API call takes longer.
-
-None of these issues are theoretical. They were encountered during the development of this framework and directly influenced the emphasis on artifact primacy (sessions can drop) and dispatch self-containment (you may not get a chance to clarify).
+This framework was developed behind the Great Firewall of China using VPN access. Network instability directly influenced the emphasis on artifact primacy (sessions can drop) and dispatch self-containment (you may not get a chance to clarify). If you're working in a similar environment, see the [Project Overview](case-study/PROJECT_OVERVIEW.md) for specific workarounds.
 
 ---
 
