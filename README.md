@@ -124,7 +124,9 @@ How these patterns were discovered and proven on a real project.
 
 ## Quick Start
 
-If you're starting a multi-agent project today:
+**If you're non-technical** and want to learn this methodology from scratch, start with the **[Methodology Guide](METHODOLOGY.md)** — a step-by-step walkthrough written for someone who has a problem, has access to AI agents, and has no idea how to start.
+
+**If you're already running agents** and want to add specific coordination patterns, start here:
 
 1. **Create an onboarding checklist** ([template](templates/ONBOARDING_CHECKLIST_TEMPLATE.md)) — this is the single highest-impact intervention. Define what agents read, in what order.
 
