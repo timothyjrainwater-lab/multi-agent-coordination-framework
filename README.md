@@ -2,7 +2,7 @@
 
 **A practical methodology for coordinating multiple AI agents on complex software projects.**
 
-Built and proven on a 5,100+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
+Built and proven on a 5,775+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
 
 ---
 
@@ -17,6 +17,21 @@ When you use multiple LLM agents to build software, you hit walls that don't exi
 - **The human coordinator becomes the bottleneck.** You can't read everything, and you can't tell which agent is right when they disagree.
 
 These aren't theoretical problems. They're what happens on Day 3 of any serious multi-agent project. This framework documents the solutions we discovered by breaking things and codifying the fixes.
+
+---
+
+## What Makes This Different
+
+Most AI coordination guides tell you what to do. This one shows you what went wrong.
+
+**From the proving ground (D&D 3.5e combat engine):**
+- 5,775+ automated tests across 9 verification domains
+- 338 formulas verified against source rules
+- 30 bugs found and categorized into 8 coordination error patterns
+- 7 WO batches (H0 fixes + H1 features) coordinated across parallel agent sessions
+- 3 of 7 parallel agents silently failed to commit in one dispatch — the fix became a governance pattern
+
+Every pattern in this framework exists because something specific broke. The [failure catalog](case-study/FAILURE_CATALOG.md) has the receipts.
 
 ---
 
@@ -69,6 +84,7 @@ Reusable solutions to specific coordination problems. Each pattern documents the
 
 | Pattern | Problem It Solves | File |
 |---------|------------------|------|
+| [Enforcement Hierarchy](patterns/ENFORCEMENT_HIERARCHY.md) | Corrections don't stick across sessions | 3-tier model: test-enforced > process-enforced > prose-enforced |
 | [Staged Context Loading](patterns/STAGED_CONTEXT_LOADING.md) | Agents waste context reading files in wrong order | How to build a reading sequence that orients agents efficiently |
 | [Dispatch Self-Containment](patterns/DISPATCH_SELF_CONTAINMENT.md) | Work orders fail because agents lack context | How to write work orders amnesiac agents can execute |
 | [Artifact Primacy](patterns/ARTIFACT_PRIMACY.md) | Knowledge lost between sessions | How to ensure decisions survive context boundaries |
@@ -77,7 +93,7 @@ Reusable solutions to specific coordination problems. Each pattern documents the
 | [Concurrent Session Protocol](patterns/CONCURRENT_SESSION_PROTOCOL.md) | Parallel sessions conflict on shared files | How to manage file ownership across sessions |
 | [PM Context Compression](patterns/PM_CONTEXT_COMPRESSION.md) | Human coordinator can't read everything | How to structure information flow to a bandwidth-limited human |
 | [Coordination Failure Taxonomy](patterns/COORDINATION_FAILURE_TAXONOMY.md) | Same mistakes repeat across projects | Categorized catalog of what goes wrong and why |
-| [Enforcement Hierarchy](patterns/ENFORCEMENT_HIERARCHY.md) | Corrections don't stick across sessions | 3-tier model: test-enforced > process-enforced > prose-enforced |
+| [Integration Canary](patterns/INTEGRATION_CANARY.md) | Unit tests pass but product doesn't work end-to-end | How to catch integration gaps before they compound |
 
 ### Templates
 Ready-to-use file templates for implementing the patterns in your own project.
@@ -123,11 +139,13 @@ If you're starting a multi-agent project today:
 This framework wasn't designed top-down. It was discovered bottom-up by a non-technical operator coordinating multiple AI agents (Claude Opus, Claude Sonnet, GPT-4) to build a D&D 3.5e deterministic referee engine. Every pattern exists because something broke and the fix got codified into a protocol.
 
 **Project stats at time of extraction:**
-- 5,100+ automated tests
+- 5,775+ automated tests
 - 338 formulas verified against source rules
 - 30 bugs found and categorized into 8 error patterns
 - 9 verification domains completed
 - 7+ governance documents, each born from a specific failure
+- 7 H1 feature WOs completed and integrated
+- Integration Canary pattern discovered and codified
 - Multiple concurrent agent sessions coordinated through file-based protocols
 
 **The operator's background:** Former chef, current English educator, zero programming experience. The methodology emerged because protocols were the only tool available — and it turns out protocols are the right tool for coordinating agents that can't remember yesterday.

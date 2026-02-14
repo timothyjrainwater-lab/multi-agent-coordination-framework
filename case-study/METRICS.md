@@ -73,6 +73,18 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 
 ---
 
+## H1 WO Batch Metrics
+
+| Metric | Value |
+|--------|-------|
+| H1 WOs completed | 7 |
+| Tests passing after H1 batch | 5,775+ |
+| Builder commit failures recovered (one batch) | 4 (3/7 agents silently failed to commit) |
+| Integration Constraint Policy | Codified — no new infrastructure WOs until canary runs |
+| Integration break points found by canary | 4 (all invisible to unit tests) |
+
+---
+
 ## Enforcement Tier Effectiveness
 
 | Tier | Stickiness | Example |
