@@ -10,7 +10,7 @@ Maintain a categorized failure catalog. Every coordination failure gets document
 
 ## The Taxonomy
 
-Six categories of coordination failure, discovered empirically:
+Eight categories of coordination failure, discovered empirically:
 
 ### Category 1: Partial Update
 **What:** One session updates some files that reference a shared fact, but misses others.
@@ -48,6 +48,18 @@ Six categories of coordination failure, discovered empirically:
 **Example:** Onboarding checklist referenced a planning file at `docs/planning/FILE.md`, but the file had been moved to `docs/planning/archived/FILE.md`.
 **Prevention:** Sources of truth index — a single file declaring which file is authoritative for each concept. Machine-generated sources (scripts that count tests, snapshot tools) outrank hand-maintained prose.
 
+### Category 7: Silent Agent Completion
+**What:** An agent reports task completion but produces zero artifacts (no code changes, no file modifications, no diff output).
+**Why:** The agent internally "processed" the task — reading files, reasoning about changes, possibly hitting edit tool failures — and evaluated its own progress as complete. But internal state doesn't equal external artifacts.
+**Example:** 3 of 7 parallel fix agents reported completion with zero code changes on disk. Discovered during commit review when `git diff` showed no modifications for their target files. 43% silent failure rate in one dispatch.
+**Prevention:** Post-completion verification gate — after any agent reports completion, run `git diff` on target files before accepting the result. An agent saying "done" is not the artifact. The diff is. Agents should include `git diff --stat` output in their completion reports.
+
+### Category 8: Schema Cascade Underestimation
+**What:** A work order scopes changes to direct consumers of a modified schema but misses infrastructure layers (serialization, aggregation, tests), causing the actual change set to be 2-3x larger than estimated.
+**Why:** Schema changes propagate through layers that aren't visible from the consumer level. The WO author traces the direct code path but not the infrastructure the schema participates in.
+**Example:** WO-FIX-03 was scoped to touch 3 files (conditions.py, attack_resolver.py, full_attack_resolver.py). The actual fix required 6 files: the 3 listed plus serialization methods (to_dict/from_dict), aggregation functions (get_condition_modifiers), and 4 test files asserting the old behavior.
+**Prevention:** Schema-change WOs include a mandatory cascade checklist: definition → serialization → aggregation → consumers → tests. Each layer must be explicitly confirmed as "no change needed" or "change required at [file:line]."
+
 ## Implementation
 
 ### Catalog Format
@@ -56,7 +68,7 @@ Six categories of coordination failure, discovered empirically:
 ### CF-[NNN]: [Short Name]
 
 **Date:** [When it happened]
-**Category:** [Partial Update | Cross-Provider | Scope Bleed | Context Starvation | Parallel Collision | Stale Reference]
+**Category:** [Partial Update | Cross-Provider | Scope Bleed | Context Starvation | Parallel Collision | Stale Reference | Silent Completion | Schema Cascade]
 **Sessions Involved:** [Which agents/sessions]
 **What Happened:** [Factual description — no blame, just events]
 **Root Cause:** [Why the coordination protocol didn't prevent it]
@@ -88,9 +100,7 @@ At the start of each project phase or after a batch of work completes, review th
 
 ## Real Example
 
-The proving-ground project accumulated 6 coordination failures over approximately two weeks of multi-agent construction. The failures clustered in two categories: Partial Update (3 incidents) and Context Starvation (2 incidents). This clustering revealed that the project's biggest gap was not dispatch quality or session management, but **cross-file consistency** — the problem of keeping multiple documents synchronized when a shared fact changes.
-
-That insight led directly to the Cross-File Consistency Gate pattern, which eliminated the Partial Update category entirely in subsequent work.
+The proving-ground project accumulated 8 coordination failures over approximately two weeks of multi-agent construction. The failures clustered in three categories: Partial Update (3 incidents), Context Starvation (2 incidents), and Silent Completion (1 incident at 43% rate within a single dispatch). This clustering revealed that the project's biggest gaps were **cross-file consistency** (keeping documents synchronized) and **agent reliability** (verifying agents actually produce artifacts). The Silent Completion failure was particularly insidious — without `git diff` verification, 3 of 7 parallel agents would have been accepted as complete with zero work product.
 
 ## Anti-Patterns
 
