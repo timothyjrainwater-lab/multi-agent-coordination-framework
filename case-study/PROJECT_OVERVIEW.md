@@ -19,17 +19,17 @@ The operator wrote zero lines of code directly. All code was produced by AI agen
 
 | Metric | Value |
 |--------|-------|
-| Automated tests | 5,774+ (15 pre-existing failures, 0 regressions) |
+| Automated tests | 5,804+ (15 pre-existing failures, 0 regressions) |
 | Verified formulas | 338 across 9 domains |
 | Source files | 15+ core resolvers |
 | Governance documents | 10+ (each born from a specific failure) |
 | Bugs found in verification | 30 (later reduced to ~22 after research cross-referencing) |
 | AMBIGUOUS verdicts requiring PM decision | 28 |
-| Total work orders dispatched | 33 (fix, feature, research, governance, audit) |
-| Builder debriefs archived | 12 |
-| Research documents produced | 19 |
+| Total work orders dispatched | 37 (fix, feature, research, governance, audit, framework) |
+| Builder debriefs archived | 14 |
+| Research documents produced | 30 |
 | Parallel agent groups (single session) | 7 simultaneous |
-| Total agent sessions | 40+ |
+| Total agent sessions | 45+ |
 
 ## Complexity
 

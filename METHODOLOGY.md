@@ -12,7 +12,7 @@ You don't know how to code. Or you know a little, but not enough to build what y
 
 This document is the hard parts.
 
-It's written by a non-technical operator (former chef, English educator) who used this methodology to build a 5,774-test software system by coordinating AI agents through file-based protocols. Every recommendation comes from something that actually happened — usually something that went wrong first.
+It's written by a non-technical operator (former chef, English educator) who used this methodology to build a 5,804-test software system by coordinating AI agents through file-based protocols. Every recommendation comes from something that actually happened — usually something that went wrong first.
 
 ---
 

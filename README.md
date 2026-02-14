@@ -2,7 +2,7 @@
 
 **A practical methodology for coordinating multiple AI agents on complex software projects.**
 
-Built and proven on a 5,774+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
+Built and proven on a 5,804+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
 
 ---
 
@@ -25,10 +25,10 @@ These aren't theoretical problems. They're what happens on Day 3 of any serious 
 Most AI coordination guides tell you what to do. This one shows you what went wrong.
 
 **From the proving ground (D&D 3.5e combat engine):**
-- 5,774+ automated tests across 9 verification domains
+- 5,804+ automated tests across 9 verification domains
 - 338 formulas verified against source rules
 - 30 bugs found and categorized into 10 coordination error patterns
-- 33 work orders dispatched across 40+ agent sessions
+- 37 work orders dispatched across 45+ agent sessions
 - 3 of 7 parallel agents silently failed to commit in one dispatch — the fix became a governance pattern
 
 Every pattern in this framework exists because something specific broke. The [failure catalog](case-study/FAILURE_CATALOG.md) has the receipts.
@@ -82,22 +82,22 @@ You can't give agents shared memory. You can give them protocols — handoff che
 ### Patterns
 Reusable solutions to specific coordination problems. Each pattern documents the problem, the solution, when to use it, and a real example from the proving ground.
 
-| Pattern | Problem It Solves | File |
-|---------|------------------|------|
+| Pattern | Problem It Solves | Solution |
+|---------|------------------|----------|
 | [Enforcement Hierarchy](patterns/ENFORCEMENT_HIERARCHY.md) | Corrections don't stick across sessions | 3-tier model: test-enforced > process-enforced > prose-enforced |
-| [Staged Context Loading](patterns/STAGED_CONTEXT_LOADING.md) | Agents waste context reading files in wrong order | How to build a reading sequence that orients agents efficiently |
-| [Dispatch Self-Containment](patterns/DISPATCH_SELF_CONTAINMENT.md) | Work orders fail because agents lack context | How to write work orders amnesiac agents can execute |
-| [Artifact Primacy](patterns/ARTIFACT_PRIMACY.md) | Knowledge lost between sessions | How to ensure decisions survive context boundaries |
-| [Cross-File Consistency Gate](patterns/CROSS_FILE_CONSISTENCY.md) | Partial updates create contradictions | How to enforce all-or-nothing updates |
-| [Session Bootstrap](patterns/SESSION_BOOTSTRAP.md) | Agents start with stale assumptions | How to ground agents in machine-verified truth |
-| [Concurrent Session Protocol](patterns/CONCURRENT_SESSION_PROTOCOL.md) | Parallel sessions conflict on shared files | How to manage file ownership across sessions |
-| [PM Context Compression](patterns/PM_CONTEXT_COMPRESSION.md) | Human coordinator can't read everything | How to structure information flow to a bandwidth-limited human |
+| [Staged Context Loading](patterns/STAGED_CONTEXT_LOADING.md) | Agents waste context reading files in wrong order | Defined reading sequence that orients agents in minimal context |
+| [Dispatch Self-Containment](patterns/DISPATCH_SELF_CONTAINMENT.md) | Work orders fail because agents lack context | Self-contained work orders that amnesiac agents can execute |
+| [Artifact Primacy](patterns/ARTIFACT_PRIMACY.md) | Knowledge lost between sessions | Pin every decision to a file — conversation doesn't survive |
+| [Cross-File Consistency Gate](patterns/CROSS_FILE_CONSISTENCY.md) | Partial updates create contradictions | All-or-nothing updates across every file referencing a fact |
+| [Session Bootstrap](patterns/SESSION_BOOTSTRAP.md) | Agents start with stale assumptions | Machine-verified truth (tests, git status) before prose documents |
+| [Concurrent Session Protocol](patterns/CONCURRENT_SESSION_PROTOCOL.md) | Parallel sessions conflict on shared files | Explicit file ownership with no overlaps between agents |
+| [PM Context Compression](patterns/PM_CONTEXT_COMPRESSION.md) | Human coordinator can't read everything | Structured information flow to a bandwidth-limited human |
 | [Coordination Failure Taxonomy](patterns/COORDINATION_FAILURE_TAXONOMY.md) | Same mistakes repeat across projects | Categorized catalog of what goes wrong and why |
 | [Role Separation](patterns/ROLE_SEPARATION.md) | Agents assume they can do everything | Five-role model with explicit authorities and boundaries |
 | [Research-to-Build Pipeline](patterns/RESEARCH_TO_BUILD_PIPELINE.md) | Raw insights produce scope bleed when dispatched directly | Staged conversion: Burst → Research → Brick → Builder WO |
 | [Plain English Pass](patterns/PLAIN_ENGLISH_PASS.md) | Non-technical operators can't parse technical debriefs | 3-question translation layer before the technical dump |
-| [Debrief Integrity Boundary](patterns/DEBRIEF_INTEGRITY_BOUNDARY.md) | Agent self-reports are trusted without verification | Named trust boundary with mitigation options |
-| [Integration Canary](patterns/INTEGRATION_CANARY.md) | Unit tests pass but product doesn't work end-to-end | How to catch integration gaps before they compound |
+| [Debrief Integrity Boundary](patterns/DEBRIEF_INTEGRITY_BOUNDARY.md) | Agent self-reports are trusted without verification | Named trust boundary with verification spectrum and mitigations |
+| [Integration Canary](patterns/INTEGRATION_CANARY.md) | Unit tests pass but product doesn't work end-to-end | One script that exercises the full product path before new WOs |
 
 ### Templates
 Ready-to-use file templates for implementing the patterns in your own project.
@@ -145,13 +145,13 @@ How these patterns were discovered and proven on a real project.
 This framework wasn't designed top-down. It was discovered bottom-up by a non-technical operator coordinating multiple AI agents (Claude Opus, Claude Sonnet, GPT-4) to build a D&D 3.5e deterministic referee engine. Every pattern exists because something broke and the fix got codified into a protocol.
 
 **Project stats (updated 2026-02-14):**
-- 5,774+ automated tests (15 pre-existing failures, 0 regressions)
+- 5,804+ automated tests (15 pre-existing failures, 0 regressions)
 - 338 formulas verified against source rules across 9 domains
 - 30 bugs found and categorized into 10 error patterns
-- 33 work orders dispatched (fix, feature, research, governance, audit)
-- 12 builder debriefs archived
-- 19 research documents produced
-- 40+ agent sessions coordinated through file-based protocols
+- 37 work orders dispatched (fix, feature, research, governance, audit, framework)
+- 14 builder debriefs archived
+- 30 research documents produced
+- 45+ agent sessions coordinated through file-based protocols
 - 10+ governance documents, each born from a specific failure
 
 **The operator's background:** Former chef, current English educator, zero programming experience. The methodology emerged because protocols were the only tool available — and it turns out protocols are the right tool for coordinating agents that can't remember yesterday.

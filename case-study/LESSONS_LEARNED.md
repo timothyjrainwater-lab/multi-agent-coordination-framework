@@ -1,6 +1,6 @@
 # Lessons Learned
 
-What worked, what didn't, and what we'd do differently. Derived from 3+ weeks of multi-agent coordination on a 5,774+ test codebase.
+What worked, what didn't, and what we'd do differently. Derived from 3+ weeks of multi-agent coordination on a 5,804+ test codebase.
 
 ---
 
@@ -24,7 +24,7 @@ Running `pytest` at session start and `git diff` before committing caught proble
 
 ### 4. The human coordinator doesn't need to understand the code
 
-The operator (a non-programmer) coordinated 20+ agent sessions by understanding the coordination problem, not the codebase. Writing dispatches, reviewing diffs, resolving ambiguities, and routing findings across agents — none of this requires knowing Python. It requires knowing project management.
+The operator (a non-programmer) coordinated 45+ agent sessions by understanding the coordination problem, not the codebase. Writing dispatches, reviewing diffs, resolving ambiguities, and routing findings across agents — none of this requires knowing Python. It requires knowing project management.
 
 ### 5. Artifact primacy works as advertised
 
@@ -32,7 +32,7 @@ Every fact that survived a context boundary was in a file. Every fact that was l
 
 ### 6. Debriefs as a learning loop
 
-The operator builds system understanding by reading debriefs, not code. The 4-pass debrief format (Plain English → Full Dump → PM Summary → Retrospective) is the mechanism. The Plain English pass translates what the agent did into terms the operator can reason about. Over 12+ debriefs, the operator developed a mental model of the system's architecture, its weak points, and its trajectory — without ever reading a line of Python.
+The operator builds system understanding by reading debriefs, not code. The 4-pass debrief format (Plain English → Full Dump → PM Summary → Retrospective) is the mechanism. The Plain English pass translates what the agent did into terms the operator can reason about. Over 14+ debriefs, the operator developed a mental model of the system's architecture, its weak points, and its trajectory — without ever reading a line of Python.
 
 **The lesson:** Debriefs aren't status reports for tracking task completion. They're the operator's primary learning channel. Optimizing debrief quality directly improves the operator's decision-making on future dispatches.
 

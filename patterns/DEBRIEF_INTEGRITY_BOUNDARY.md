@@ -23,7 +23,7 @@ These fields can be independently confirmed by running a command. An agent canno
 | Import graph changes | `grep` for import statements |
 | Boundary law compliance | Boundary law test suite |
 
-**Integrity guarantee:** ~100%. If the agent claims 5,774 tests pass and `pytest` shows 5,770, the discrepancy is immediately visible.
+**Integrity guarantee:** ~100%. If the agent claims 5,804 tests pass and `pytest` shows 5,800, the discrepancy is immediately visible.
 
 ### Tier 2: Process-Verifiable (Medium Integrity)
 
