@@ -2,6 +2,8 @@
 
 Quantitative results from the D&D 3.5e referee engine project — the proving ground for this framework.
 
+**Last Updated:** 2026-02-14
+
 ---
 
 ## Verification Results
@@ -48,13 +50,16 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 
 | Metric | Value |
 |--------|-------|
-| Total agent sessions | 20+ |
+| Total agent sessions | 45+ |
 | Parallel agent groups (max) | 7 simultaneous |
 | Silent agent failure rate | 3/7 (43%) in one parallel dispatch |
 | WOs requiring reclassification | 1 of 13 (WO-FIX-11, code structure mismatch) |
 | Schema cascade underestimation | 1 of 13 (WO-FIX-03, 3 files scoped → 6 touched) |
 | Cross-file consistency failures | 2 (Domain C verification, Domain A checklist) |
 | Research cross-ref reclassifications | 4 confirmed (Domain A), ~8-10 estimated (all domains) |
+| Total WOs dispatched (all types) | 37 (fix, feature, research, governance, audit, framework) |
+| Builder debriefs archived | 14 |
+| Research documents produced | 30 |
 
 ---
 
@@ -78,7 +83,7 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 | Metric | Value |
 |--------|-------|
 | H1 WOs completed | 7 |
-| Tests passing after H1 batch | 5,775+ |
+| Tests passing after H1 batch | 5,804+ |
 | Builder commit failures recovered (one batch) | 4 (3/7 agents silently failed to commit) |
 | Integration Constraint Policy | Codified — no new infrastructure WOs until canary runs |
 | Integration break points found by canary | 4 (all invisible to unit tests) |

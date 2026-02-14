@@ -113,6 +113,34 @@ The WO listed 3 files. The fix touched 6.
 
 ---
 
+## F-009: Constructor Replacement via Blanket Edit
+
+**Category:** Impact Analysis (Schema Cascade variant)
+**Severity:** MEDIUM — caught by test suite but required mid-session course correction
+
+**What happened:** WO-RNG-PROTOCOL-001 required replacing the concrete class `RNGManager` with the new `RNGProvider` Protocol in type annotations across 19 files. The builder used `replace_all` to change `RNGManager` to `RNGProvider` across each file. In two files (`replay_runner.py` and `session_log.py`), the same class name appeared both as a type annotation AND as a constructor call: `rng = RNGManager(master_seed)`. The blanket replacement changed both to `RNGProvider(master_seed)`, which fails because Protocols cannot be instantiated.
+
+**Root cause:** `replace_all` operates on string patterns without semantic awareness. It doesn't distinguish between "this name appears as a type annotation" and "this name appears as a constructor call." The WO listed 8 specific files but said "all other core resolvers" — the builder used a uniform approach without checking whether each file had constructor sites.
+
+**Fix created:** Before using `replace_all` on a class name, grep for `ClassName(` (with parenthesis) to identify files that use the class as both a type and a constructor. Handle those files separately with targeted edits. The builder's debrief documented this as a fragility observation for future type-level refactors.
+
+---
+
+## F-010: Dead Validation Rule (Silent Pass)
+
+**Category:** False Confidence
+**Severity:** HIGH — validation pass reports all-clear when the validated field is structurally empty
+
+**What happened:** Two compile-time validation rules (CT-006: contraindication enforcement) and one runtime rule (RV-007: contraindication consistency check) were designed to catch narration errors — e.g., a fire spell narrated with ice visual effects. However, the `contraindications` field on `AbilityPresentationEntry` is always an empty tuple `()` because the SemanticsStage never generates contraindication data.
+
+**Root cause:** The validation rules were written before the data they validate was populated. Both rules iterate over `contraindications` entries and check for violations. When the tuple is empty, the loop executes zero times, and the rule reports PASS — not because the data is correct, but because there's nothing to check.
+
+**Detection:** Discovered during a roadmap audit that cross-referenced research findings (RQ-002: contraindications always `()`) against the WO scope (WO-COMPILE-VALIDATE-001 includes CT-006). The auditor flagged that shipping validation rules for an unpopulated field creates false confidence — the PM reviewing validation results could mistake "0 violations" for "verified correct."
+
+**Fix created:** Validation rules that check a field which may be structurally empty should either: (a) report SKIP (not PASS) when the field is empty, with a warning that the check is dormant; or (b) be scoped into the same WO that populates the field, so the rule and its data land together.
+
+---
+
 ## Summary
 
 | ID | Category | Fix Pattern |
@@ -125,3 +153,5 @@ The WO listed 3 files. The fix touched 6.
 | F-006 | Test Infrastructure | Gold master regeneration prediction |
 | F-007 | Resource Management | WO sizing guidelines |
 | F-008 | Impact Analysis | Schema cascade checklist |
+| F-009 | Impact Analysis | Pre-edit grep for constructor sites |
+| F-010 | False Confidence | SKIP vs PASS for empty-field validation |

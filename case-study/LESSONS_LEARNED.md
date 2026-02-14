@@ -1,6 +1,6 @@
 # Lessons Learned
 
-What worked, what didn't, and what we'd do differently. Derived from 2 weeks of multi-agent coordination on a 5,500+ test codebase.
+What worked, what didn't, and what we'd do differently. Derived from 3+ weeks of multi-agent coordination on a 5,804+ test codebase.
 
 ---
 
@@ -24,11 +24,17 @@ Running `pytest` at session start and `git diff` before committing caught proble
 
 ### 4. The human coordinator doesn't need to understand the code
 
-The operator (a non-programmer) coordinated 20+ agent sessions by understanding the coordination problem, not the codebase. Writing dispatches, reviewing diffs, resolving ambiguities, and routing findings across agents — none of this requires knowing Python. It requires knowing project management.
+The operator (a non-programmer) coordinated 45+ agent sessions by understanding the coordination problem, not the codebase. Writing dispatches, reviewing diffs, resolving ambiguities, and routing findings across agents — none of this requires knowing Python. It requires knowing project management.
 
 ### 5. Artifact primacy works as advertised
 
 Every fact that survived a context boundary was in a file. Every fact that was lost wasn't. There are zero exceptions to this rule in the project's history. Conversational knowledge that isn't pinned to an artifact is assumed lost — and that assumption has been correct every time.
+
+### 6. Debriefs as a learning loop
+
+The operator builds system understanding by reading debriefs, not code. The 4-pass debrief format (Plain English → Full Dump → PM Summary → Retrospective) is the mechanism. The Plain English pass translates what the agent did into terms the operator can reason about. Over 14+ debriefs, the operator developed a mental model of the system's architecture, its weak points, and its trajectory — without ever reading a line of Python.
+
+**The lesson:** Debriefs aren't status reports for tracking task completion. They're the operator's primary learning channel. Optimizing debrief quality directly improves the operator's decision-making on future dispatches.
 
 ---
 
@@ -81,3 +87,7 @@ The governance documents emerged reactively — each one was created after a fai
 ### 5. Research before verification
 
 The verification pass should have consumed the research corpus first. Instead, verification ran against raw SRD text, and research cross-referencing happened after the fact. Running research first would have prevented the Design Decision Blindness failure and reduced the WRONG count by ~30% on the first pass.
+
+### 6. Plain English debrief pass from Day 1
+
+Early debriefs were technical-only — full of rule IDs, pipeline positions, and dataclass names. The operator could track task completion ("WO done, tests pass") but couldn't build understanding of what the system actually did or why specific changes mattered. Adding the Plain English pass (3 questions: what problem, what it does, why it matters) would have accelerated the operator's learning curve significantly. The operator lost several cycles of learning velocity before realizing the debrief format needed a translation layer.

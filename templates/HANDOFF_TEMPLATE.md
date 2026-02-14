@@ -2,7 +2,7 @@
 
 Copy this template when a session ends with incomplete work, findings that must survive to the next session, or context the next agent needs.
 
-See: [Artifact Primacy Pattern](../patterns/ARTIFACT_PRIMACY.md)
+See: [Artifact Primacy Pattern](../patterns/ARTIFACT_PRIMACY.md) | [Plain English Pass Pattern](../patterns/PLAIN_ENGLISH_PASS.md)
 
 ---
 
@@ -13,6 +13,16 @@ See: [Artifact Primacy Pattern](../patterns/ARTIFACT_PRIMACY.md)
 **To:** Next agent
 **Date:** [YYYY-MM-DD]
 **Status:** [READY TO EXECUTE | NEEDS REVIEW | BLOCKED ON [thing]]
+
+---
+
+## Plain English Summary (Optional — include if the operator will read this handoff)
+
+**What was this session doing?**
+[1-2 sentences. No jargon. What the session was working on in everyday terms.]
+
+**Where did it leave off?**
+[1-2 sentences. What's done and what remains, in non-technical language.]
 
 ---
 
