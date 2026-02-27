@@ -141,6 +141,32 @@ The WO listed 3 files. The fix touched 6.
 
 ---
 
+## F-011: Parallel Implementation Path Drift
+
+**Category:** Cross-Path Consistency
+**Severity:** HIGH — 21 independent calculations drifted across two code paths over 30+ work orders; discovered only by a systematic audit
+
+**What happened:** A result calculation had a "single-item" resolver and a "batch" resolver. The batch resolver was added later and reproduced the calculation logic independently rather than delegating. Over 30+ work orders, every WO that improved the calculation targeted the single-item resolver. No dispatch ever mentioned the batch resolver. The batch resolver drifted silently. A sweep audit eventually found that 21 independent calculation components had diverged between the two paths. No individual WO caused the drift — the drift accumulated because no dispatch enumerated the second path.
+
+**Root cause:** WO dispatches are scoped to fix a specific known gap. They treat the target function as the only implementation. No one was responsible for asking "where else does this same logic exist?" The PM didn't know about the parallel paths; the builders weren't asked to look.
+
+**Fix created:** PARALLEL_IMPLEMENTATION_PARITY pattern. Every WO modifying a resolver function must identify all parallel code paths before work begins. Builder verifies parity across all paths before filing the debrief. Missing parity check = debrief reject. When PM doesn't know all parallel paths, the dispatch instructs the builder to identify them as their first task.
+
+---
+
+## F-012: Specification Authority Gap
+
+**Category:** Domain Correctness
+**Severity:** HIGH — specification deviation shipped as engine behavior; discovered only by a debrief reviewer reading the original specification directly
+
+**What happened:** A WO was dispatched to implement a calculation rule. The rule had a widely-used community variant that differed from the written specification. The WO dispatch had no authority tag. The builder used the community variant — plausible, locally reasonable, tests passed. The deviation was discovered at debrief by a reviewer who read the original specification directly. The implementation was 1.5× where the specification said 2×. Correcting it required a builder WO and downstream effects.
+
+**Root cause:** The WO spec had no obligation to declare what authority the implementation should follow. The builder had no signal that this was a contested point. The PM had no obligation to check. The ambiguity flowed through the entire process undetected because it was never made visible.
+
+**Fix created:** AUTHORITY_TAGGING pattern. Every WO touching domain logic must declare its authority source: SPEC (with citation) or POLICY (with operator sign-off). No third type. Agent judgment, community convention, and "obviously this is how it works" are not valid authority types. An ambiguity catalog maintained by the PM tracks rules with known community variants.
+
+---
+
 ## Summary
 
 | ID | Category | Fix Pattern |
@@ -155,3 +181,5 @@ The WO listed 3 files. The fix touched 6.
 | F-008 | Impact Analysis | Schema cascade checklist |
 | F-009 | Impact Analysis | Pre-edit grep for constructor sites |
 | F-010 | False Confidence | SKIP vs PASS for empty-field validation |
+| F-011 | Cross-Path Consistency | Parallel implementation parity check |
+| F-012 | Domain Correctness | Authority tagging (SPEC/POLICY) |
