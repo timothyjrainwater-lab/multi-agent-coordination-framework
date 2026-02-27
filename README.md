@@ -103,6 +103,7 @@ Reusable solutions to specific coordination problems. Each pattern documents the
 | [Authority Tagging](patterns/AUTHORITY_TAGGING.md) | Community convention ships instead of specification | Every domain-logic WO declares SPEC or POLICY authority — no third type |
 | [Post-Debrief Retrospective](patterns/POST_DEBRIEF_RETROSPECTIVE.md) | Builder peripheral observations die in context windows | Mandatory post-debrief question surfaces what the builder noticed |
 | [Hidden Assumption Sweep](patterns/HIDDEN_ASSUMPTION_SWEEP.md) | Small questions that reframe architecture go unclassified | 10-question triage protocol converts grenades into named artifacts |
+| [Proactive Assumption Sweep Cadence](patterns/PROACTIVE_ASSUMPTION_SWEEP_CADENCE.md) | Reactive sweeps miss confidently-wrong assumptions | Scheduled 10-question sweeps on a fixed cadence — pair with every audit dispatch |
 
 ### Templates
 Ready-to-use file templates for implementing the patterns in your own project.
