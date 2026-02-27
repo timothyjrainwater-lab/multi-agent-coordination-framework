@@ -2,7 +2,7 @@
 
 Quantitative results from the D&D 3.5e referee engine project — the proving ground for this framework.
 
-**Last Updated:** 2026-02-14
+**Last Updated:** 2026-02-27
 
 ---
 
@@ -50,16 +50,18 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 
 | Metric | Value |
 |--------|-------|
-| Total agent sessions | 45+ |
+| Total agent sessions | 100+ |
 | Parallel agent groups (max) | 7 simultaneous |
 | Silent agent failure rate | 3/7 (43%) in one parallel dispatch |
 | WOs requiring reclassification | 1 of 13 (WO-FIX-11, code structure mismatch) |
 | Schema cascade underestimation | 1 of 13 (WO-FIX-03, 3 files scoped → 6 touched) |
 | Cross-file consistency failures | 2 (Domain C verification, Domain A checklist) |
 | Research cross-ref reclassifications | 4 confirmed (Domain A), ~8-10 estimated (all domains) |
-| Total WOs dispatched (all types) | 37 (fix, feature, research, governance, audit, framework) |
-| Builder debriefs archived | 14 |
+| Total WOs dispatched (all types) | 100+ (fix, feature, research, governance, audit, framework) |
+| Builder debriefs archived | 50+ |
 | Research documents produced | 30 |
+| Delivery batches completed | 25+ |
+| Gate test suite size | 8,521+ tests |
 
 ---
 
@@ -67,11 +69,12 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 
 | Metric | Value |
 |--------|-------|
-| Fix WOs dispatched | 13 (12 active, 1 retired) |
+| Fix WOs dispatched | 13 (12 active, 1 retired) — Phase 1 only |
 | Fix WOs completed | 11 of 12 |
 | Fix WOs needing reclassification | 1 (WO-FIX-11) |
 | Fix WOs partially completed | 1 (WO-FIX-12, BUG-F2/F3 unverified) |
-| Tests passing after all fixes | 5,277 |
+| Tests passing after all Phase 1 fixes | 5,277 |
+| Tests passing after all Phase 2 batches | 8,521+ |
 | Tests updated (old wrong behavior) | 6 |
 | Gold master files regenerated | 4 |
 | Total commits for fix session | 9 |
@@ -87,6 +90,22 @@ Quantitative results from the D&D 3.5e referee engine project — the proving gr
 | Builder commit failures recovered (one batch) | 4 (3/7 agents silently failed to commit) |
 | Integration Constraint Policy | Codified — no new infrastructure WOs until canary runs |
 | Integration break points found by canary | 4 (all invisible to unit tests) |
+
+---
+
+## Phase 2 Batch Delivery Metrics
+
+| Metric | Value |
+|--------|-------|
+| Batches completed (Phase 2) | 20+ (Batches I through R+) |
+| Average gate tests per batch | 8 (range: 6-11) |
+| Average accepted WOs per batch | 4 |
+| Regression failures introduced | 0 (zero regressions across all accepted batches) |
+| Ghost WOs dispatched (feature already implemented) | ~3 (identified via pre-dispatch verification) |
+| Parallel path drift incidents caught | 1 (F-011, 21-modifier divergence, discovered by sweep audit) |
+| Regression spiral incidents | 1 (F-ML-004, agent burned context on pre-existing failures) |
+| PM commits sweeping staged builder code | 1 (F-ML-005, caught post-hoc; audit trail corrected) |
+| Spec authority gap incidents | 1 (F-012, community variant shipped over specification value) |
 
 ---
 

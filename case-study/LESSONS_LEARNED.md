@@ -1,6 +1,6 @@
 # Lessons Learned
 
-What worked, what didn't, and what we'd do differently. Derived from 3+ weeks of multi-agent coordination on a 5,804+ test codebase.
+What worked, what didn't, and what we'd do differently. Derived from 4+ months of multi-agent coordination on a 8,500+ test codebase across 25+ delivery batches and 100+ work orders.
 
 ---
 
@@ -32,9 +32,63 @@ Every fact that survived a context boundary was in a file. Every fact that was l
 
 ### 6. Debriefs as a learning loop
 
-The operator builds system understanding by reading debriefs, not code. The 4-pass debrief format (Plain English → Full Dump → PM Summary → Retrospective) is the mechanism. The Plain English pass translates what the agent did into terms the operator can reason about. Over 14+ debriefs, the operator developed a mental model of the system's architecture, its weak points, and its trajectory — without ever reading a line of Python.
+The operator builds system understanding by reading debriefs, not code. The 4-pass debrief format (Plain English → Full Dump → PM Summary → Retrospective) is the mechanism. The Plain English pass translates what the agent did into terms the operator can reason about. Over 50+ debriefs, the operator developed a mental model of the system's architecture, its weak points, and its trajectory — without ever reading a line of Python.
 
 **The lesson:** Debriefs aren't status reports for tracking task completion. They're the operator's primary learning channel. Optimizing debrief quality directly improves the operator's decision-making on future dispatches.
+
+---
+
+## Methodology Lessons — Second Phase (ML-001 through ML-006)
+
+These lessons emerged from 25+ delivery batches (Batches M through V and beyond) on a codebase that had grown to 8,500+ tests. They represent a second tier of learning — operational failures that only become visible at scale.
+
+### ML-001: "Filed" Is Not "Accepted" — Gate Tests Are the Arbiter
+
+**What happened:** Multiple work orders were reported as complete in builder debriefs. A subsequent audit found the code absent from the codebase — fields missing, handlers not wired, functions not in the expected locations. The debrief was accurate as a description of intended work. The code wasn't there.
+
+**Root cause:** Builders write accurate descriptions of work they believe they completed. Without a gate run at verdict time, a debrief is self-reported. "Filed" means the builder believes it's done. "Accepted" means gate tests confirmed it.
+
+**Rule:** No WO status upgrades to ACCEPTED without a gate run. If a WO has no gate tests, it cannot be accepted — it must be held until a subsequent gate run validates it.
+
+### ML-002: Post-Debrief Loose Threads Must Be Actively Solicited
+
+**What happened:** Coupling risks and structural observations surfaced after a formal debrief — only because a builder was still looking at the seams. The formal debrief format is oriented toward delivery. Drift risks and coupling issues require a different lens, one that activates after the delivery pressure is off.
+
+**Root cause:** Builders orient the debrief toward what was done. Structural risks require the question "what did you notice?" rather than "what did you do?"
+
+**Rule:** After every accepted debrief, ask: "Anything else you noticed outside the debrief?" File any findings before closing. (See POST_DEBRIEF_RETROSPECTIVE pattern.)
+
+### ML-003: Coverage Audit Maps Are Not Ground Truth — Verify the Gap Before Writing Code
+
+**What happened:** Work orders were generated from coverage audits that flagged features as missing. Builders wrote implementation code. Gate tests confirmed the features were already fully implemented — the audits had misread the existing code.
+
+**Root cause:** Coverage audits are generated from code inspection at a point in time. They can misread existing implementations, especially when function names don't obviously signal their scope. A WO generated from an audit inherits the audit's confidence level, not the codebase's actual state.
+
+**Rule:** Any WO targeting "missing" functionality must include an Assumptions to Validate step that explicitly confirms the gap exists before writing code. If the builder finds the feature is already implemented: gate tests validate existing behavior, zero production changes. Not a failure — correct methodology.
+
+### ML-004: Regression Spirals Burn Context Without Producing Output
+
+**What happened:** A builder completed all implementation and its own targeted gate tests. The builder then ran the full regression suite, hit failures unrelated to its WO, and entered a retry loop — 28+ tool calls, never filed a debrief, burned context without producing output. The operator closed the session manually after confirming the code was complete.
+
+**Root cause:** The prompt implied the builder must achieve zero failures before filing. The full suite had pre-existing failures. An agent that doesn't know this will retry indefinitely. No retry cap was specified; no stop rule was given.
+
+**Rule:** Every batch dispatch includes (1) a retry cap ("fix once, re-run once — if still failing, record and stop"), (2) the known pre-existing failure count ("N pre-existing failures — do not treat these as regressions"), and (3) a separate regression agent for the full suite after all WOs in a batch land.
+
+### ML-005: PM Commits Can Sweep Staged Engine Code
+
+**What happened:** A builder had staged production code changes but not yet committed. The PM ran `git add <pm files> && git commit` to land PM-side work. Git committed ALL staged content — including the builder's staged engine files. The engine code appeared in a PM commit, corrupting the audit trail.
+
+**Root cause:** `git commit` (without `-a`) commits all staged content, not only files explicitly added in the most recent `git add`. A parallel builder staging without committing creates a shared staging area trap.
+
+**Rule:** PM must run `git status` before every commit. If any production files appear in the staging area, do NOT proceed. Signal the builder to commit their staged changes first, then PM commits separately.
+
+### ML-006: Missing Authority Tagging Lets Spec Errors Ship as Engine Behavior
+
+**What happened:** A WO was dispatched to implement a calculation rule. The rule had a widely-used community variant that differed from the written specification. The WO dispatch had no authority tag. The builder used the community variant — plausible, tests passed. The deviation was discovered at debrief by a reviewer who read the original specification directly. Correcting it required a builder WO and downstream effects.
+
+**Root cause:** The WO spec had no obligation to declare what authority the implementation should follow. The builder had no signal that this was a contested point. The ambiguity flowed through undetected because it was never made visible.
+
+**Rule:** Every WO touching domain logic with any community dispute (multipliers, stacking rules, edge cases) must include an authority tag in the spec: SPEC (cite source + location) or POLICY (cite rationale + operator sign-off). No third type. (See AUTHORITY_TAGGING pattern.)
 
 ---
 

@@ -12,7 +12,7 @@ You don't know how to code. Or you know a little, but not enough to build what y
 
 This document is the hard parts.
 
-It's written by a non-technical operator (former chef, English educator) who used this methodology to build a 5,804-test software system by coordinating AI agents through file-based protocols. Every recommendation comes from something that actually happened — usually something that went wrong first.
+It's written by a non-technical operator (former chef, English educator) who used this methodology to build an 8,500+ test software system by coordinating AI agents through file-based protocols over 4+ months. Every recommendation comes from something that actually happened — usually something that went wrong first.
 
 ---
 
@@ -376,7 +376,7 @@ You're doing this wrong when:
 
 ## One Last Thing
 
-This methodology was built by someone who couldn't code, for people who can't code. It works. It produced a system with nearly 6,000 tests, verified against primary sources, with every significant coordination failure cataloged and resolved.
+This methodology was built by someone who couldn't code, for people who can't code. It works. It produced a system with over 8,500 tests, verified against primary sources, with every significant coordination failure cataloged and resolved.
 
 But it's not magic. You'll still have sessions that go sideways. Agents will still misunderstand your instructions. Work orders will still have gaps. The difference is that every failure becomes a protocol, and every protocol makes the next session better.
 
