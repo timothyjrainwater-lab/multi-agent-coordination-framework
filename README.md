@@ -2,7 +2,7 @@
 
 **A practical methodology for coordinating multiple AI agents on complex software projects.**
 
-Built and proven on a 5,804+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude, GPT, and other LLM agents with zero shared memory.
+Built and proven on an 8,521+ test, 338-formula deterministic game engine — by a non-technical operator (former chef, English educator) coordinating Claude Opus, Claude Sonnet, and other LLM agents with zero shared memory across 100+ agent sessions over 4+ months.
 
 ---
 
@@ -25,10 +25,10 @@ These aren't theoretical problems. They're what happens on Day 3 of any serious 
 Most AI coordination guides tell you what to do. This one shows you what went wrong.
 
 **From the proving ground (D&D 3.5e combat engine):**
-- 5,804+ automated tests across 9 verification domains
+- 8,521+ automated tests across 9 verification domains
 - 338 formulas verified against source rules
-- 30 bugs found and categorized into 10 coordination error patterns
-- 37 work orders dispatched across 45+ agent sessions
+- 30 bugs found and categorized into 12 coordination error patterns
+- 100+ work orders dispatched across 100+ agent sessions over 4+ months
 - 3 of 7 parallel agents silently failed to commit in one dispatch — the fix became a governance pattern
 
 Every pattern in this framework exists because something specific broke. The [failure catalog](case-study/FAILURE_CATALOG.md) has the receipts.
@@ -98,6 +98,11 @@ Reusable solutions to specific coordination problems. Each pattern documents the
 | [Plain English Pass](patterns/PLAIN_ENGLISH_PASS.md) | Non-technical operators can't parse technical debriefs | 3-question translation layer before the technical dump |
 | [Debrief Integrity Boundary](patterns/DEBRIEF_INTEGRITY_BOUNDARY.md) | Agent self-reports are trusted without verification | Named trust boundary with verification spectrum and mitigations |
 | [Integration Canary](patterns/INTEGRATION_CANARY.md) | Unit tests pass but product doesn't work end-to-end | One script that exercises the full product path before new WOs |
+| [Parallel Implementation Parity](patterns/PARALLEL_IMPLEMENTATION_PARITY.md) | Same logic implemented in multiple paths drifts silently | Enumerate all parallel paths on every WO; verify parity before debrief |
+| [Sweep Audit Protocol](patterns/SWEEP_AUDIT_PROTOCOL.md) | Sequential WOs can't see system-wide coherence drift | Periodic read-only audits that cross-check subsystems for consistency |
+| [Authority Tagging](patterns/AUTHORITY_TAGGING.md) | Community convention ships instead of specification | Every domain-logic WO declares SPEC or POLICY authority — no third type |
+| [Post-Debrief Retrospective](patterns/POST_DEBRIEF_RETROSPECTIVE.md) | Builder peripheral observations die in context windows | Mandatory post-debrief question surfaces what the builder noticed |
+| [Hidden Assumption Sweep](patterns/HIDDEN_ASSUMPTION_SWEEP.md) | Small questions that reframe architecture go unclassified | 10-question triage protocol converts grenades into named artifacts |
 
 ### Templates
 Ready-to-use file templates for implementing the patterns in your own project.
@@ -106,6 +111,7 @@ Ready-to-use file templates for implementing the patterns in your own project.
 |----------|---------|------|
 | [Onboarding Checklist](templates/ONBOARDING_CHECKLIST_TEMPLATE.md) | Reading order + verification steps for new agents | Implements Staged Context Loading |
 | [Work Order Dispatch](templates/WORK_ORDER_TEMPLATE.md) | Self-contained task assignment | Implements Dispatch Self-Containment |
+| [Audit Work Order](templates/AUDIT_DISPATCH_TEMPLATE.md) | Read-only audit task assignment (never writes code) | Implements Sweep Audit Protocol |
 | [Handoff Document](templates/HANDOFF_TEMPLATE.md) | End-of-session knowledge transfer | Implements Artifact Primacy |
 | [Session Memo](templates/SESSION_MEMO_TEMPLATE.md) | Structured report to human coordinator | Implements PM Context Compression |
 | [Sources of Truth Index](templates/SOURCES_OF_TRUTH_TEMPLATE.md) | Which file is authoritative for which concept | Implements Machine Truth Over Prose |
@@ -144,15 +150,16 @@ How these patterns were discovered and proven on a real project.
 
 This framework wasn't designed top-down. It was discovered bottom-up by a non-technical operator coordinating multiple AI agents (Claude Opus, Claude Sonnet, GPT-4) to build a D&D 3.5e deterministic referee engine. Every pattern exists because something broke and the fix got codified into a protocol.
 
-**Project stats (updated 2026-02-14):**
-- 5,804+ automated tests (15 pre-existing failures, 0 regressions)
+**Project stats (updated 2026-02-27):**
+- 8,521+ automated tests (zero regressions across all accepted batches)
 - 338 formulas verified against source rules across 9 domains
-- 30 bugs found and categorized into 10 error patterns
-- 37 work orders dispatched (fix, feature, research, governance, audit, framework)
-- 14 builder debriefs archived
+- 30 bugs found and categorized into 12 error patterns
+- 100+ work orders dispatched (fix, feature, research, governance, audit, framework)
+- 50+ builder debriefs archived
 - 30 research documents produced
-- 45+ agent sessions coordinated through file-based protocols
-- 10+ governance documents, each born from a specific failure
+- 100+ agent sessions coordinated through file-based protocols
+- 25+ delivery batches, each with gate tests as the acceptance arbiter
+- Every governance document born from a specific, documented failure
 
 **The operator's background:** Former chef, current English educator, zero programming experience. The methodology emerged because protocols were the only tool available — and it turns out protocols are the right tool for coordinating agents that can't remember yesterday.
 
@@ -164,14 +171,6 @@ This is a living framework. If you're using these patterns on your own multi-age
 - What pattern you tried
 - What worked or didn't
 - What coordination failure you hit that isn't in the taxonomy
-
----
-
-## Operational Notes
-
-### Restricted Network Environments
-
-This framework was developed behind the Great Firewall of China using VPN access. Network instability directly influenced the emphasis on artifact primacy (sessions can drop) and dispatch self-containment (you may not get a chance to clarify). If you're working in a similar environment, see the [Project Overview](case-study/PROJECT_OVERVIEW.md) for specific workarounds.
 
 ---
 
