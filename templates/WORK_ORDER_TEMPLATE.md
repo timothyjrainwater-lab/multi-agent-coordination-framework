@@ -65,6 +65,24 @@ See: [Dispatch Self-Containment Pattern](../patterns/DISPATCH_SELF_CONTAINMENT.m
 - DEPENDS-ON: [WO-ID] ([reason])
 - Or: None — this WO is independently executable.
 
+## Source Artifact Verification
+
+[If this WO derives from a research document, list it here. PM must open and read the source artifact before dispatching — quote or paraphrase the specific finding that drives this WO. If no source artifact, write "N/A".]
+
+- Source: `[path/to/research.md]`
+- Finding: "[Direct quote or close paraphrase of the finding that justifies this WO]"
+- Registry status: [SWEPT+LEDGERED | PARTIAL | NOT-SWEPT — if NOT-SWEPT, sweep before dispatching]
+
+## Verdict Review Class
+
+[How this WO will be accepted. Choose one:]
+
+- **SELF-REVIEW** — PM reviews the debrief and accepts. Low-risk, narrow-scope, mechanical change. No auditor involvement required.
+- **SELF-REVIEW + AUDITOR SPOT-CHECK** — PM reviews, then flags 1-2 specific claims for auditor verification. Medium-risk or touches shared logic.
+- **AUDITOR PRIMARY** — Auditor executes a full read-only review before PM accepts. High-risk, cross-cutting, or involves architecture decisions.
+
+[Write one line explaining why this class was chosen.]
+
 ## What NOT to Do
 
 [Common mistakes an agent might make on this task. Specific to this WO.]
