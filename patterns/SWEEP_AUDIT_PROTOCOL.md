@@ -168,3 +168,37 @@ The audit also found that an intermediate result was being computed correctly in
 None of these findings were visible in the test suite, because the test suite tested each path separately. The audit caught what sequential unit tests structurally cannot catch: the coherence of the whole.
 
 **Result:** 3 corrective builder WOs were dispatched. The parallel path architecture was refactored to eliminate the structural source of drift.
+
+---
+
+## Foundation Confidence Events
+
+Sometimes a sweep audit (or an accumulation of canaries) reveals not just a fixable gap, but a structural confidence problem: the process was proving local correctness but failing to prove system connection. Individual WOs were sound. The system-as-a-whole was not verified.
+
+This is a Foundation Confidence Event. It requires more than a single corrective WO.
+
+### Bounded Audit Freeze Sprint
+
+When a systemic canary is found, call a bounded freeze sprint:
+
+- **Duration:** 2–5 sessions
+- **Rule:** No new feature WOs during the sprint (blockers and critical fixes excepted)
+- **Goal:** Restore confidence in the foundation before continuing delivery
+
+### Exit Gates (define these before the sprint begins)
+
+1. Fidelity and coverage status updated for the targeted scope
+2. High-risk domains audited with findings filed
+3. All findings routed (WO dispatched, DEFERRED, or CLOSED)
+4. Process patch installed if a structural gap was identified
+5. Corrective WOs dispatched for highest-impact issues
+
+The PM must define the exit gates before starting the sprint. An open-ended freeze is not a sprint — it is a stall. The exit gates make it bounded.
+
+### What This Is Not
+
+A Foundation Confidence Event is not evidence that the previous work was fake or that the process failed. It means the process proved local correctness (which it was designed to do) but hadn't yet proven system connection (which requires an additional layer). The sweep audit is that layer. The corrective sprint restores the connection.
+
+The right response is not to restart or rewrite. It is to add the missing verification layer and dispatch targeted corrective WOs for the highest-impact issues found.
+
+**Doctrine:** Gates prove local correctness. Sweeps prove cross-cutting fidelity, parity, and consumption. Both are required. Neither replaces the other.

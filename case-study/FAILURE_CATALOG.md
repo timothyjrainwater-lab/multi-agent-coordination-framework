@@ -167,6 +167,47 @@ The WO listed 3 files. The fix touched 6.
 
 ---
 
+---
+
+## F-013: Set-but-Not-Consumed Data
+
+**Category:** False Confidence / Write-Only Implementation
+**Severity:** HIGH — features appear implemented; no runtime effect exists
+
+**What happened:** Multiple mechanics were correctly wired into the character creation and data pipeline. The data fields were populated, the tests passed, and the WOs were accepted. The mechanics did nothing at runtime. No resolver ever read the fields. The acceptance criteria proved data existence, not runtime effect. The gap was discovered only during a cross-cutting consume-site audit: 17 fields set at chargen were never read by any resolver.
+
+**Root cause:** Acceptance criteria tested whether the data was written. No criterion tested whether the data changed a runtime outcome. "Field is populated" and "mechanic is active" are not the same thing. A write path with no read path is not an implementation — it is a stub dressed up as delivery.
+
+**Fix created:** Consume-site verification. Every WO that writes a field must identify: (1) where the field is read at runtime, (2) what observable behavior changes because of that read, and (3) a gate test that proves the runtime effect fires. A WO that cannot answer all three has an incomplete scope. If the consume site doesn't exist yet, the WO either builds it or explicitly flags the field as `CONSUME_DEFERRED` with a tracking finding. Acceptance gate: no ACCEPTED if write-only (unless CONSUME_DEFERRED + finding logged). See CONSUME_SITE_VERIFICATION pattern.
+
+---
+
+## F-014: Research-to-Queue Orphan
+
+**Category:** Traceability / Process Failure
+**Severity:** HIGH — approved research never affects the build queue; equivalent to not doing the research
+
+**What happened:** Multiple research sprints identified OSS sources, tools, and architectural approaches that were evaluated, documented, and accepted. The documentation was filed. No WO was ever dispatched to act on the findings. Months of sessions later, the same data was being hand-typed instead of ingested from the identified sources. When challenged, the PM could not confirm which findings had been acted on and which had not — the research was preserved but not routed.
+
+**Root cause:** The process had a gate for "research is documented" but no gate for "research findings are routed to the queue." A finding that is written down but not assigned a disposition (WO, explicit defer with rationale, or closed) is a dead artifact. It consumes context when read and produces no output. The gap between "we have a findings memo" and "the findings became WOs" was invisible to the PM.
+
+**Fix created:** Discovery-queue traceability. A dedicated register cross-references all research/audit/probe artifacts against the WO queue. Every finding must have a disposition: WO dispatched, explicitly deferred with rationale, or closed. A finding with no disposition is a governance failure, not an open item. The register is reviewed on a fixed cadence (every N batches). See DISCOVERY_QUEUE_TRACEABILITY pattern.
+
+---
+
+## F-015: Planning Artifact Drift
+
+**Category:** Artifact Freshness / False Foundation
+**Severity:** HIGH — PM and builders make decisions against a roadmap that no longer reflects reality
+
+**What happened:** A coverage map tracking "what is implemented vs. what is not" fell significantly behind the actual delivery state. Mechanics that had been implemented across 30+ WOs still showed as NOT STARTED in the coverage map. New WO dispatches were written against the stale map — some targeted mechanics that were already implemented, some missed dependencies that the map didn't reflect. The local debriefs were accurate; the planning artifact was fiction.
+
+**Root cause:** The coverage map was updated during initial implementation but had no mandatory update trigger on each delivery. Each WO updated its own debrief but there was no debrief requirement to update the planning artifact. Over time, the map drifted from reality. Builders consulted the map and made locally reasonable decisions that were globally wrong because the map was wrong.
+
+**Fix created:** Coverage map update required in every debrief. If a WO implements a mechanic, the coverage map row for that mechanic must be updated in the same debrief (NOT STARTED → IMPLEMENTED). Missing coverage map update = debrief incomplete. The builder is responsible for the update; the PM verifies at acceptance. A stale planning artifact is treated the same as a missing artifact: it cannot be trusted and must not be used for dispatch decisions.
+
+---
+
 ## Summary
 
 | ID | Category | Fix Pattern |
@@ -183,3 +224,6 @@ The WO listed 3 files. The fix touched 6.
 | F-010 | False Confidence | SKIP vs PASS for empty-field validation |
 | F-011 | Cross-Path Consistency | Parallel implementation parity check |
 | F-012 | Domain Correctness | Authority tagging (SPEC/POLICY) |
+| F-013 | False Confidence | Consume-site verification (write → read → effect → test) |
+| F-014 | Traceability | Discovery-queue traceability register |
+| F-015 | Artifact Freshness | Coverage map update required in every debrief |
